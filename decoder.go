@@ -11,15 +11,15 @@ type Parser func([]byte) float64
 
 // DecodeWav decode wav file information from bytes
 func DecodeWav(bytes []byte) *Wav {
-	waveFormat := WaveFormat(binary.LittleEndian.Uint16(bytes[20:22]))
+	waveFormat := WaveFormat(binary.LittleEndian.Uint16(bytes[20:22])) //采样格式 1=PCM 2=IEEE Float 3=8-bit ITU-T G.711 A-law 4=8-bit ITU-T G.711 µ-law
 
-	numChannels := binary.LittleEndian.Uint16(bytes[22:24])
+	numChannels := binary.LittleEndian.Uint16(bytes[22:24]) //声道 1=单声道 2=立体声
 
-	sampleRate := binary.LittleEndian.Uint32(bytes[24:28])
+	sampleRate := binary.LittleEndian.Uint32(bytes[24:28]) //采样评率 Hz
 
-	bitsPerSample := binary.LittleEndian.Uint16(bytes[34:36])
+	bitsPerSample := binary.LittleEndian.Uint16(bytes[34:36]) //采样精度 8, 16, 24, 32
 
-	subchunk1Size := binary.LittleEndian.Uint32(bytes[16:20])
+	subchunk1Size := binary.LittleEndian.Uint32(bytes[16:20]) //数据大小 fmt块的大小
 
 	subchunk2Start := 20 + subchunk1Size
 	subchunk2ID := string(bytes[subchunk2Start : subchunk2Start+4])
